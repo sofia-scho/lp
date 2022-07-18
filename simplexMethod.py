@@ -1,3 +1,6 @@
+#Sofia Scholefield
+#V00916008
+
 import numpy as np #Life Saver
 import sys #For file reader
 from math import log10, floor #For rounding, avoid errors from algebraic method
@@ -35,19 +38,13 @@ def parseFile():
 
     return B,N,A,b,c
 
-def sigFigs(num):
-    """sigFigs Function to take a number and round it to 7 significant figures"""
-    if num==0:
-        #ignore
-        return 0
-    else:
-        num = round(num,7-int(floor(log10(abs(num))))-1)
-    return num
+
 
 def primalEntering(zN,B,N):
     """Function to find entering variable for primal simplex"""
     varIndex = 0
     z=[0]*(len(B)+len(N))
+    #Follow Bland's Rule
     for i in N:
         z[i]=zN[varIndex]
         varIndex+=1
@@ -59,6 +56,7 @@ def dualExiting(xB,B,N):
     """Function to find exiting variable for dual simplex"""
     varIndex = 0
     x = [0]*(len(B)+len(N))
+    #Follow Bland's Rule
     for i in B:
         x[i] = xB[varIndex]
         varIndex+=1
@@ -93,7 +91,7 @@ def simplex(A,b,c,B,N):
         #Check optimality
         if sum(1 for entry in zN if entry >=0) == len(zN):
             objective = np.matmul(np.matmul(np.transpose(cB), ABInverse),b)
-            objective = sigFigs(objective)
+        
             #List for coordinates of optimal objective value
             points = []
             for s in range(len(N)):
@@ -103,9 +101,11 @@ def simplex(A,b,c,B,N):
                 else:
                     points.append(0)
             print("optimal")
-            print(objective)
+            
+            print(round(objective,7))
             for point in points:
-                print(point, end = " ")
+              
+                print(round(point,7), end = " ")
             return
 
         #Boo gotta keep pivotting
@@ -125,6 +125,7 @@ def simplex(A,b,c,B,N):
             print("unbounded")
             return 
 
+        #Don't want to make bad pivot - smallest constraint
         thisOne = min(options)
         place = 0
         for variable,deltaVariable in zip(xB, deltaXB):
@@ -172,7 +173,7 @@ def dual(A,b,c,B,N,):
             if all(number==0 for number in c):
                 return(B,N)
             objective = np.matmul(np.matmul(np.transpose(cB),ABInverse),b)
-            objective = sigFigs(objective)
+        
             points = []
             for place in range(len(N)):
                 if place in B:
@@ -181,9 +182,11 @@ def dual(A,b,c,B,N,):
                 else: 
                     points.append(0)
             print("optimal")
-            print(objective)
+          
+            print(round(objective,7))
             for point in points:
-                print(point, end = " ")
+                
+                print(round(point,7), end = " ")
             return(B,N)
 
         #Not optimal keep pivoting
@@ -204,6 +207,7 @@ def dual(A,b,c,B,N,):
 
         this = min(options)
 
+        #Find smallest constraint and implement
         thisOne = 0
         for variable, deltaVariable in zip(zN,deltaZN):
             if deltaVariable > 0 and variable/deltaVariable == this:
@@ -256,7 +260,7 @@ def main():
         temp = [0]*len(N)
         (B,N) = dual(A,b,temp,B,N)
         if B != [] and N != []:
-        #Hopefully dual initialized   
+        #Should work  
             simplex(A,b,c,B,N)
 
 
