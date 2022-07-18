@@ -262,6 +262,8 @@ def main():
         if B != [] and N != []:
         #Should work  
             simplex(A,b,c,B,N)
+        else:
+            print("infeasible")
 
 
 if __name__ == "__main__":
