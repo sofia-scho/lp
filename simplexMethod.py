@@ -21,7 +21,7 @@ def parseFile():
 
     #Read from STDIN and fill matrices
     data = sys.stdin.read()
-    data = data.splitlines()
+    data = data.split("\n")
     #Convert each entry to a float type
     dictionary = [[float(num) for num in line.split()] for line in data]
 
@@ -239,7 +239,7 @@ def main():
     #Need identity 
     A=np.array(A)
     rows, columns = A.shape
-    identity = np.zeros((rows,rows), float)
+    identity = np.zeros((rows,rows), int)
     np.fill_diagonal(identity,1)
     A=np.hstack((A, identity))
 

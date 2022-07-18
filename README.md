@@ -17,7 +17,7 @@ I took the logic/flow of the program from The Revised Simplex Slides (slide 70 a
 ## Extra Features
 1. Primal-Dual Methods
 2. Linear Algebraic Simplex Method
-    Though I still used Matrix inverses.
+    
 
 ## Future Improvements
 I would like to implement something to prevent error accumulation when working with floatin point arithmetic. I would also like to implement a different primary pivotting rule that is "better" or usually faster than Bland's and instead only use Bland's when I detect the program is cycling ie. after three pivots and the objective has not increased use Bland's instead of Steepest Edge.
