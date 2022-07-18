@@ -3,7 +3,7 @@
 
 import numpy as np #Life Saver
 import sys #For file reader
-from math import log10, floor #For rounding, avoid errors from algebraic method
+
 
 def parseFile():
     """Function to extract data from input file from STDIN"""
@@ -44,7 +44,7 @@ def primalEntering(zN,B,N):
     """Function to find entering variable for primal simplex"""
     varIndex = 0
     z=[0]*(len(B)+len(N))
-    #Follow Bland's Rule
+
     for i in N:
         z[i]=zN[varIndex]
         varIndex+=1
@@ -56,7 +56,7 @@ def dualExiting(xB,B,N):
     """Function to find exiting variable for dual simplex"""
     varIndex = 0
     x = [0]*(len(B)+len(N))
-    #Follow Bland's Rule
+    
     for i in B:
         x[i] = xB[varIndex]
         varIndex+=1
@@ -113,7 +113,6 @@ def simplex(A,b,c,B,N):
         ARow = A[:,entering]
         #Choose exiting variable based on entering selection
         deltaXB = np.matmul(ABInverse,ARow)
-        deltaXN = 0
         options = []
         for variable, deltaVariable in zip(xB,deltaXB):
             if deltaVariable >0:
@@ -138,7 +137,7 @@ def simplex(A,b,c,B,N):
 
         xB = xB - thisOne*deltaXB
 
-        #Pivotting
+        #Pivotting step
         B.remove(int(exiting))
         B.append(int(entering))
         N.append(int(exiting))
@@ -148,6 +147,7 @@ def simplex(A,b,c,B,N):
 def dual(A,b,c,B,N,):
     """Dual Simplex Function for feasible dictionaries"""
 
+    #This is pretty much same as simplex function but using the dual setup
     while(True):
         N = [int(num) for num in N]
         B = [int(num) for num in B]
@@ -170,6 +170,7 @@ def dual(A,b,c,B,N,):
         zN = np.matmul(np.transpose(np.matmul(ABInverse,AN)),cB)-cN
 
         if sum(1 for entry in xB if entry >=0) == len(xB):
+            #Is this primal-dual method?
             if all(number==0 for number in c):
                 return(B,N)
             objective = np.matmul(np.matmul(np.transpose(cB),ABInverse),b)
@@ -256,7 +257,7 @@ def main():
     elif dual:
         dual(A,b,c,B,N)
     else:
-        #Zero it
+        #Zero it - will act as flag for primal-dual method
         temp = [0]*len(N)
         (B,N) = dual(A,b,temp,B,N)
         if B != [] and N != []:
