@@ -251,9 +251,6 @@ def main():
         primal = False
     if any(num > 0 for num in c):
         dual = False
-
-
-    #Primal is feasible
     if primal:
         simplex(A,b,c,B,N)
     elif dual:
