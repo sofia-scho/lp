@@ -1,6 +1,8 @@
 #Sofia Scholefield
 #V00916008
 
+#I do not enjoy netlibs
+
 import numpy as np #Life Saver
 import sys #For file reader
 
